@@ -1,0 +1,405 @@
+/* --------------------------------------
+GENERIC CSS FOR GOOD CAROUSEL VIEW 
+|-------------------------------------| */
+
+:focus-visible {
+	outline: 8px solid #f6ff00 !important;
+} 
+
+.modal .slick-slide:focus-visible {
+	border: 8px solid #f6ff00 !important;
+} 
+
+/*-----------------------------*/
+
+.slider-wrapper.zoom-active .slider 
+.slick-slide.slick-link-slide:hover {
+	cursor: zoom-in;    
+} 
+
+/* Slider is the class for div container. Slider is a generic name (NOT library name). */
+.slider-wrapper {
+
+    position: relative;
+
+	@media screen and (max-width: 1140px) {
+		&.full-container {
+			margin: -15px -15px;
+		}
+	}
+}
+
+.slider {
+   --arrowColor: var(--asstnm-secondary1);
+	--arrowHoverColor: var(--asstnm-secondary-dark);
+	--dotsColor: var(--asstnm-secondary1);
+	--dotsColorHover: var(--asstnm-secondary-dark);
+
+	margin: 0px;
+
+	[class*="col-"] {
+		max-width: 100%;
+		padding-inline: 0;
+	}
+
+	.lfr-layout-structure-item-collection {
+		> .container-fluid.d-flex.flex-row {
+			display: block !important;
+		}
+	}
+
+    .lfr-layout-structure-item-row {
+		overflow: visible;
+	}
+
+	.slick-slider {
+		padding-inline: 80px !important; 
+		position: relative;
+
+		[class*="col-"] {
+			max-width: 100%;
+			padding-inline: 0;
+		}
+	}
+
+	.slick-track {
+		.slick-slide {
+			height: 100%;
+
+			.row {
+				height: 100%;
+				width: 100%;
+				margin: unset;
+			}
+
+			> div {
+				height: 100%;
+			}
+
+			[class*="col-"] {
+				height: 100%;
+				padding-inline: unset;
+				display: flex !important;
+				flex-direction: column;
+				max-width: 100%;
+				padding-inline: 0;
+
+				[class^="lfr-layout-structure"] {
+					height: 100%;
+
+					> div {
+						height: 100%;
+					}
+	
+					> [id*=fragment] {
+						height: 100%;
+					}
+				}
+			}
+		
+		}
+	}
+
+	/*---------------------------------------------------------------------------------
+	This rules serves to be able to see a preview of the next slide on the right side or the left side
+	|--------------------------------------------------------------------------------| */
+
+	&.peekingSlideRight {
+		.slick-list {
+			padding: 0 10% 0 0 !important;
+		}
+	}
+
+	&.peekingSlideLeft{
+		.slick-list {
+			padding: 0 0 0 20% !important;
+		}
+	}
+
+	/*-------------------------------------------------
+	IT IS USED TO VIEW THE SLIDES ALSO IN EDIT MODE
+	|--------------------------------------------------| */
+
+	.slick-list.draggable {
+		height: 100% ! important;
+	}
+
+	/*-------------------------------------------------------------
+	IT IS USED TO DISPLAY INDICATORS AND ARROWS IN THE CORRECT WAY
+	|--------------------------------------------------------------| */
+	
+	.slick-initialized {
+		overflow: visible !important;
+
+		.slick-dots {
+            position: static; 
+		    margin-top: 20px;
+			width: unset;
+			bottom: unset;
+
+            li {
+                .slick-dot-icon {
+                    &:before {
+                        color: var(--dotsColor) !important;
+                    }
+                }
+    
+                &.slick-active {
+                    .slick-dot-icon {
+                        &:before {
+                            color: var(--dotsColorHover) !important;
+                        }
+                    }
+                }
+            }
+		}
+	}
+
+	/* --------------------
+	SPACE BTW SLIDES 
+	|--------------------| */
+
+	.slick-slide {
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+
+	.slick-list {
+		margin-left: -15px;
+		margin-right: -15px;
+	}
+
+	/*-----------------------------
+	OPTIONS SHOW DOTS 
+	|------------------------------| */
+
+	&.notDots {
+		.slick-dots {
+			display: none !important;
+		}
+	}
+
+	&.dotsOnlyDesktop {
+
+		.slick-dots {
+			display: block;
+		}
+
+		@media screen and (max-width: 570px) {
+			.slick-dots {
+				display: none !important;
+			}
+		}
+
+	}
+
+	&.dotsOnlyMobile {
+
+		.slick-dots {
+			display: none !important;
+		}
+
+		@media screen and (max-width: 570px) {
+			.slick-dots {
+				display: block !important;
+			}
+		}
+	}
+
+	&.dotsBothDevice {
+
+		.slick-dots {
+			display: block;
+		}
+	}
+
+	/*-----------------------------
+	OPTIONS SHOW ARROWS 
+	|------------------------------| */
+
+	&.notArrows {
+		.slick-arrow {
+			display: none !important;
+		}
+	}
+
+	&.arrowsOnlyDesktop {
+
+		.slick-arrow {
+			display: block;
+		}
+
+		@media screen and (max-width: 570px) {
+			.slick-arrow {
+				display: none !important;
+			}
+		}
+
+	}
+
+	&.arrowsOnlyMobile {
+
+		.slick-arrow {
+			display: none !important;
+		}
+
+		@media screen and (max-width: 570px) {
+			.slick-arrow {
+				display: block !important;
+			}
+		}
+	}
+
+	&.arrowsBothDevice {
+
+		.slick-arrow {
+			display: block;
+		}
+	}
+
+	/*-----------------------------
+	ARROWS 
+	|------------------------------| */
+
+	.slick-arrow {
+        width: 40px;
+        height: 40px;
+		background: transparent;
+		color: white;
+		z-index: 1;
+
+        .slick-next-icon,
+        .slick-prev-icon {
+            &:before {
+                color: var(--arrowColor);
+                font-size: 40px;
+                transition: all 0.4s ease;
+            }
+
+            &:hover {
+                &:before {
+                    color: var(--arrowHoverColor);
+                }
+            }
+        }
+	}
+
+    /*---------------------------------------------
+    PAUSE / PLAY
+    ------------------------------------------------*/
+
+    .slick-autoplay-toggle-button {
+    bottom: 0;
+    
+    .slick-pause-icon {
+        &:before {
+            font-size: 20px;
+        }
+    }
+}
+
+}
+
+/*-------------------------------------------------------------------------------------------------------
+I apply display flex for can use the property in same-height-container. Result = items with same height.
+|--------------------------------------------------------------------------------------------------------| */
+
+.slider .slick-track,
+.slider .slick-list {
+	display: flex;
+}
+
+/*-------------------------------
+Media query mobile
+|--------------------------------| */
+
+@media screen and (max-width: 968px) {
+
+	.slider.top.right .slick-dots {
+		top: unset;
+		right: unset;
+		width: 100%;
+		bottom: -35px;
+	}
+}
+
+/*Modale*/
+
+.modal-open .modal {
+	display: none;
+}
+
+.modal {
+	border: 0;
+	background-color: transparent;
+	padding-right: revert !important;
+	
+    .modal-dialog {
+        max-width: 1280px;
+        width: 90%;
+        height: 85vh;
+
+		.modal-content {
+			height: 100%;
+			position: static;
+			padding: 0;
+				
+			.modal-header {
+				height: 10vh;
+				
+				.close {
+					width: auto;
+					font-size: 30px;
+					
+					.close-icon {
+					}
+				}
+			}
+  
+			.modal-body {
+				height: 65vh;
+				padding: 0;
+	
+				.slider {
+					height: 100%;
+	
+					> div {
+						height: 100%;
+		
+						.lfr-layout-structure-item-row,
+						.lfr-layout-structure-item-collection {
+							height: 100%;
+
+							.slick-slider {
+								height: 100%;
+								margin: 0;
+								padding-inline: 0 !important;
+
+									
+								[id^="fragment"] > div {
+									height: 100%;
+								}
+				
+								.slick-arrow.slick-next {
+									right: 10px;
+									top: unset;
+									bottom: -15%;
+								}
+				
+								.slick-arrow.slick-prev {
+									left: 10px;
+									top: unset;
+									bottom: -15%;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			.modal-footer {
+				height: 10vh;
+			}
+      	}
+    }
+}

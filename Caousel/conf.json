@@ -1,0 +1,152 @@
+{
+    "fieldSets": [
+      {
+        "label": "Comportamento del Carosello",
+        "fields": [
+					{
+          "name": "zoomSlide",
+          "label": "Zoom del Carosello al click",
+          "type": "checkbox",
+					"description": "Al click su un qualsiasi elemento del Carosello, è possibile visualizzare una versione ingrandita, a sua volta ciclabile",
+          "defaultValue": false
+        	},
+					{
+          "name": "fullView",
+          "label": "Elimina i margini laterali in versione mobile",
+          "type": "checkbox",
+          "defaultValue": false
+        	},
+          {
+            "name": "partialSlide",
+            "label": "Visualizzazione parziale elementi adiacenti",
+            "type": "select",
+            "dataType": "string",
+						"description": "Evidenzia la presenza del Carosello lasciando intravedere gli elementi adiacenti a quello corrente",
+            "defaultValue": "false",
+            "typeOptions": {
+              "validValues": [
+                {
+                  "label": "No",
+                  "value": "false"
+                },
+                {
+                  "label": "Entrambi i lati",
+                  "value": "true"
+                },
+								{
+                  "label": "Solo elemento a sinistra",
+                  "value": "peekingSlideLeft"
+                },
+                {
+                  "label": "Solo elemento a destra",
+                  "value": "peekingSlideRight"
+                }
+              ]
+            }
+          },
+					{
+            "name": "infinite",
+            "label": "Ripeti Slides all'Infinito",
+						"description": "SE Se attivato, gli slides continueranno a scorrere all'infinito. Al raggiungimento dell'ultimo slide, lo slider ripartirà dal primo",
+            "type": "checkbox",
+            "defaultValue": true
+          },
+					{
+            "name": "loop",
+            "label": "Avanzamento automatico",
+            "type": "checkbox",
+            "defaultValue": true
+          },
+          {
+            "dataType": "int",
+            "defaultValue": "5000",
+            "label": "Velocità avanzamento automatico (in ms)",
+            "name": "slideDuration",
+            "type": "text",
+						"description": "Questo parametro viene considerato solo se l'Avanzamento automatico è abilitato",
+            "typeOptions": {
+              "validation": {
+                "min": 1000,
+                "type": "number"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Visibilità elementi accessori",
+        "fields": [
+					{
+          "name": "showDeviceArrows",
+          "label": "Freccette di avanzamento",
+          "type": "select",
+          "dataType": "string",
+          "defaultValue": "arrowsOnlyDesktop",
+          "typeOptions": {
+            "validValues": [
+							{
+								"label": "Non visualizzare",
+								"value": "notArrows"
+							},
+							{
+                "label": "Sempre",
+                "value": "arrowsBothDevice"
+              },
+              {
+                "label": "Solo desktop",
+                "value": "arrowsOnlyDesktop"
+              },
+              {
+                "label": "Solo mobile",
+                "value": "arrowsOnlyMobile"
+              }
+            ]
+          }
+        },
+				{
+          "name": "showDeviceDots",
+          "label": "Indicatori di posizione",
+          "type": "select",
+          "dataType": "string",
+          "defaultValue": "dotsOnlyDesktop",
+          "typeOptions": {
+            "validValues": [
+							{
+								"label": "Non visualizzare",
+								"value": "notDots"
+							},
+							{
+                "label": "Sempre",
+                "value": "dotsBothDevice"
+              },
+              {
+                "label": "Solo desktop",
+                "value": "dotsOnlyDesktop"
+              },
+              {
+                "label": "Solo mobile",
+                "value": "dotsOnlyMobile"
+              }
+            ]
+          }
+        }
+        ]
+      },
+			{
+        "label": "Accessibilità",
+        "fields": [
+					{
+						"name": "textAriaLabelNavigationDotsCarousel",
+						"label": "Testo menu di navigazione slider",
+						"description": "questo testo viene visualizzato e letto dagli sr. Inserisci un nome chiaro per indicare il menu di navigazione dello slider",
+						"type": "text",
+						"typeOptions": {
+							"placeholder": "Menu navigazione slide carosello"
+						},
+						"dataType": "string",
+						"defaultValue": "Menu navigazione slide carosello"    
+					}
+				]
+			}
+    ]
+  }
