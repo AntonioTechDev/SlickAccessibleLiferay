@@ -19,20 +19,24 @@ Apri il file `_clay_custom.scss` del tuo tema e aggiungi le seguenti importazion
 `
 @import "../vendor/accessible-slick-1.0.1/slick.scss";
 @import "../vendor/accessible-slick-1.0.1/accessible-slick-theme.scss";
-`
 
-### 3. Configurazione del Percorso dei Font
+### 3. Importazione dei File JS
+Nel file `portal_normal.ftl`, aggiungi la seguente riga di codice all'interno del tag `<head></head>` con il path corretto del file slick.js 
+
+`<script type="text/javascript" src="${themeDisplay.pathThemeRoot}/vendor/accessible-slick-1.0.1/slick.js"></script>`
+
+### 4. Configurazione del Percorso dei Font
 Nel file `_clay_variables.scss`, configura la variabile `$slick-font-path` con il percorso corretto dove sono situati i font di Slick. Ad esempio:
 
 `$slick-font-path: "../vendor/accessible-slick-1.0.1/fonts/";`
 
-### 4. Build e Deploy del Tema
+### 5. Build e Deploy del Tema
 Utilizza gli strumenti di build del tuo progetto per compilare il tema modificato. Una volta completato, carica il tema aggiornato sul tuo portale Liferay seguendo la procedura standard di deploy.
 
-### 5. Importazione del Componente Carosello
+### 6. Importazione del Componente Carosello
 Decomprimi il file carousel.zip trovato nella cartella Componente-liferay e importa il componente risultante nella sezione dei frammenti del tuo portale Liferay.
 
-### 6. Aggiunta del Componente a una Pagina
+### 7. Aggiunta del Componente a una Pagina
 Vai alla pagina dove desideri inserire il carosello e aggiungi il componente di carosello appena importato.
 
 ---

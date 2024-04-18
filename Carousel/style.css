@@ -36,10 +36,11 @@ GENERIC CSS FOR GOOD CAROUSEL VIEW
 	--dotsColorHover: var(--asstnm-secondary-dark);
 
 	margin: 0px;
-
-	[class*="col-"] {
-		max-width: 100%;
-		padding-inline: 0;
+	.slick-initialized {
+		[class*="col-"] {
+			max-width: 100%;
+			padding-inline: 0;
+		}
 	}
 
 	.lfr-layout-structure-item-collection {
@@ -55,6 +56,11 @@ GENERIC CSS FOR GOOD CAROUSEL VIEW
 	.slick-slider {
 		padding-inline: 80px !important; 
 		position: relative;
+		
+		@media screen and (max-width: 799px) {
+			padding-inline: 20px !important;
+			margin-bottom: 0;
+		}
 
 		[class*="col-"] {
 			max-width: 100%;

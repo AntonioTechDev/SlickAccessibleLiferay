@@ -12,11 +12,13 @@ var lastAction = 'next';
 var numberSlidesToScroll = 1;
 var nextSlide = 0;
 
+var isRowDelete = false;
 var isSlideInitialized = false;
 var isModalInitialized = false;
 var isTabIndexInitialized = false;
 var isAriaLabelInitialized = false;
 var centerModeBoolean = false;
+var carouselActive = false; 
 
 $(document).ready(function() {
     var resizeTimer;
@@ -70,28 +72,6 @@ function initSlider() {
 
         $slider = $(fragmentElement).find($selector);
 
-        /** 
-         * Rimuove le row generate automaticamente dalle collection di Liferay per ottimizzare l'implementazione del carosello.
-         * Gli elementi di ciascuna row vengono trasferiti al contenitore padre prima di eliminare le row stesse, 
-         * consentendo al carosello di funzionare correttamente solo sugli elementi desiderati.
-         */
-
-        if(isCollection && !$slider.hasClass('slick-initialized')){
-            var $container = $slider;
-            var $rows = $container.find('.row');
-
-            $rows.each(function() {
-                var row = $(this);
-
-                row.children().each(function() {
-                    var child = $(this);
-                    $container.append(child);
-                });
-
-                row.remove();
-            });
-        }
-
         /** ------------------------------- LOGICA NUMERO ELEMENTI SLIDER-----------------------------------------------------
          *  Il codice estrae le classi "col" di Bootstrap dagli elementi delle griglie per determinare il numero di elementi visibili per breakpoint nello slider.
          */
@@ -101,7 +81,13 @@ function initSlider() {
             totalItems = $slider.slick('getSlick').slideCount;
         } else {
             firstColumnElement = $slider.find('[class*="col-"]').first();
-            totalItems = $slider.children().length;
+            console.log("firstColumnElement: ", firstColumnElement);
+            console.log("firstColumnElement: "+ firstColumnElement);
+            if(isCollection && !isRowDelete) {
+                totalItems = $slider.find('.row').children().length;
+            }else {
+                totalItems = $slider.children().length;
+            }
         }
 
         if (firstColumnElement && firstColumnElement.attr('class')) {
@@ -128,6 +114,8 @@ function initSlider() {
             $mediumSlide = mediumClassFound ? 12 / $mediumSlide : 2;
             $smallSlide = smallClassFound ? 12 / $smallSlide : 1;
             $extraSmallSlide = 1;
+
+            console.log("$largeSlide: " + $largeSlide);
         }
         
         var slidesToShowBasedOnBreakpoint = calculateSlidesForBreakpoint($largeSlide, $mediumSlide, $smallSlide, $extraSmallSlide);
@@ -253,9 +241,47 @@ function initSlider() {
             });   
         }
         
+        console.log("totalItems" + totalItems);
+        console.log("slidesToShowBasedOnBreakpoint" + slidesToShowBasedOnBreakpoint);
+
+        carouselActive = configureDisplayMode();
+        console.log("attiva carosello: " , carouselActive);
+
         /** ---------FINE LOGICA MODALE------------------------------------------------------------------------------------------------------------------ */
 
-        if (totalItems > slidesToShowBasedOnBreakpoint) {  
+        if (totalItems > slidesToShowBasedOnBreakpoint && carouselActive) {  
+
+            /** 
+             * Rimuove le row generate automaticamente dalle collection di Liferay per ottimizzare l'implementazione del carosello.
+             * Gli elementi di ciascuna row vengono trasferiti al contenitore padre prima di eliminare le row stesse, 
+             * consentendo al carosello di funzionare correttamente solo sugli elementi desiderati.
+            */
+
+            console.log('isCollection:', isCollection);
+
+            // Debug per verificare se $slider ha la classe 'slick-initialized'
+            console.log('$slider.hasClass(\'slick-initialized\'):', $slider.hasClass('slick-initialized'));
+
+            if(isCollection && !$slider.hasClass('slick-initialized')){
+                var $container = $slider;
+                var $rows = $container.find('.row');
+                console.log("proviamo");
+
+                $rows.each(function() {
+                    var row = $(this);
+
+                    row.children().each(function() {
+                        var child = $(this);
+                        $container.append(child);
+                    });
+
+                    row.remove();
+                    console.log("proviamo");
+                });
+
+                isRowDelete = true;
+            }
+
             centerModeBoolean = (configuration.partialSlide === "true");   
 
             // Quando il center mode e attivo si scorre sempre di 1 slide. 
@@ -268,6 +294,7 @@ function initSlider() {
             /* 
                 All'interno di customPaging eseguo una funzione per riuscire a printare un messaggio per sr che indica scorrendo avanti quali slide si vedranno
             */
+            
             var sliderOptions = {
                 infinite: configuration.infinite,
                 dots: true,
@@ -325,7 +352,7 @@ function initSlider() {
                     }
                 ]
             };   
-
+						
             $slider.not('.slick-initialized').slick(sliderOptions);
 
                                 
@@ -434,6 +461,16 @@ function initSlider() {
         } else {
             if ($slider.hasClass('slick-initialized')) {
                 $slider.slick('unslick');
+                console.log("slider: " , $slider);
+
+                // Crea un nuovo div con classe 'row' e lo inserisce all'interno dello slider
+                var $row = $('<div>').addClass('row');
+                $slider.append($row);
+
+                // Sposta tutti i div (colonne) esistenti all'interno del nuovo div 'row'
+                $slider.children('div:not(.row)').appendTo($row);
+
+                isRowDelete = false;
             }
         }
     } else {
@@ -465,6 +502,42 @@ function initSlider() {
         } else { 
             return $extraSmallSlide;
         }
+    }
+
+    /**
+     * Determina se attivare la modalità carosello in base alla larghezza attuale della finestra del browser.
+     * Questa funzione controlla la larghezza della finestra e decide se il contenuto deve essere visualizzato
+     * come carosello o come griglia standard. La decisione si basa su valori di configurazione predefiniti
+     * che possono essere impostati dall'utente attraverso l'interfaccia di configurazione.
+     *
+     * @returns {boolean} carouselActive - Ritorna true se la modalità carosello è attiva per il breakpoint
+     * corrente, altrimenti false. Questo valore booleano può essere utilizzato per inizializzare o distruggere
+     * il carosello a seconda delle esigenze.
+     *
+     * I breakpoint sono definiti come segue:
+     * - Extra Small: meno di 576px
+     * - Small: da 576px a 767px
+     * - Medium: da 768px a 991px
+     * - Large: 992px e oltre
+     *
+     * Ogni breakpoint ha una propria configurazione (carouselXs, carouselSm, carouselMd, carouselLg)
+     * che può essere impostata per attivare o disattivare la modalità carosello.
+     */
+    function configureDisplayMode() {
+        var screenWidth = $(window).width();
+        var carouselActive = false; 
+
+        if (screenWidth < 576) {
+            carouselActive = configuration.carouselXs;
+        } else if (screenWidth >= 576 && screenWidth < 768) {
+            carouselActive = configuration.carouselSm;
+        } else if (screenWidth >= 768 && screenWidth < 992) {
+            carouselActive = configuration.carouselMd;
+        } else if (screenWidth >= 992) {
+            carouselActive = configuration.carouselLg;
+        }
+
+        return carouselActive;
     }
 
     /*-------------------------------------------------------------------------------------------------
@@ -757,4 +830,3 @@ function initSlider() {
         }
     }
 }
-
